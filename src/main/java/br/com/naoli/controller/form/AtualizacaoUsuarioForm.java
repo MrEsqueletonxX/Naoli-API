@@ -1,8 +1,5 @@
 package br.com.naoli.controller.form;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 

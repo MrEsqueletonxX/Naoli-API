@@ -1,5 +1,8 @@
 package br.com.naoli.controller.form;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -7,6 +10,12 @@ import org.hibernate.validator.constraints.Length;
 
 import br.com.naoli.model.Usuario;
 
+@Table(
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "cpf"),
+                @UniqueConstraint(columnNames = "username")
+        }
+)
 public class UsuarioForm {
 	@NotNull
 	@NotEmpty
@@ -16,11 +25,13 @@ public class UsuarioForm {
 	@NotNull
 	@NotEmpty
 	@Length(min = 11, max = 14)
+	@Column(unique = true)
 	private String cpf;
 	
 	@NotNull
 	@NotEmpty
 	@Length(min = 3)
+	@Column(unique = true)
 	private String username;
 	
 	@NotNull

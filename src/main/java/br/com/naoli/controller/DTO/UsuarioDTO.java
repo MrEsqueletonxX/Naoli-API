@@ -21,7 +21,9 @@ public class UsuarioDTO {
 		this.id = usuario.getId();
 		this.nome = usuario.getNome();
 		this.cpf = usuario.getCpf();
+		
 		this.username = usuario.getUsername();
+		
 		this.dataCriacao = usuario.getDataCriacao();
 	}
 	

@@ -6,11 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames={"cpf", "username"})})
 public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +15,7 @@ public class Usuario {
 
 	private String nome;
 	private String cpf;
-	private String username;
+	private String username;	
 	private String password;
 	private LocalDateTime dataCriacao = LocalDateTime.now();
 	
