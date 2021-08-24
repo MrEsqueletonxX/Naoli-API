@@ -43,6 +43,12 @@ public class UsuarioController {
 		return null;
 	}
 	
+	@GetMapping("/listByCpf/{cpf}")
+	public UsuarioDTO listByCpf(@PathVariable("cpf") String cpf) {
+		Usuario usuario = usuarioRepository.findByCpf(cpf);
+		return new UsuarioDTO(usuario);
+	}
+	
 	@PostMapping("/cadastro")
 	@Transactional
 	public Usuario cadastrarUsuario(@RequestBody @Valid UsuarioForm usuarioForm) {
@@ -71,7 +77,6 @@ public class UsuarioController {
 			usuarioRepository.deleteById(id);
 			return mensagem;
 		}
-		
 		return null;
 	}
 }

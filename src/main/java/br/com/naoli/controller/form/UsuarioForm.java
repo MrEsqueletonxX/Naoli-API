@@ -1,6 +1,5 @@
 package br.com.naoli.controller.form;
 
-import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
@@ -25,13 +24,11 @@ public class UsuarioForm {
 	@NotNull
 	@NotEmpty
 	@Length(min = 11, max = 14)
-	@Column(unique = true)
 	private String cpf;
 	
 	@NotNull
 	@NotEmpty
 	@Length(min = 3)
-	@Column(unique = true)
 	private String username;
 	
 	@NotNull

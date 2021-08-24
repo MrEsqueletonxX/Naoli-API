@@ -1,11 +1,14 @@
 package br.com.naoli.model;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
+import br.com.naoli.controller.DTO.UsuarioDTO;
 
 @Entity
 public class Usuario {
@@ -29,6 +32,14 @@ public class Usuario {
 		this.cpf = cpf;
 		this.username = username;
 		this.password = password;
+	}
+	
+	public Usuario(UsuarioDTO usuarioDTO) {
+		this.id = usuarioDTO.getId();
+		this.nome = usuarioDTO.getNome();
+		this.cpf = usuarioDTO.getCpf();
+		this.dataCriacao = usuarioDTO.getDataCriacao();
+		this.username = usuarioDTO.getUsername();
 	}
 
 	@Override

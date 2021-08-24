@@ -2,6 +2,7 @@ package br.com.naoli.controller.DTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import br.com.naoli.model.Usuario;
