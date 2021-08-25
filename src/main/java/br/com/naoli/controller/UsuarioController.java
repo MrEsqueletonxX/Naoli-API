@@ -1,5 +1,6 @@
 package br.com.naoli.controller;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.naoli.controller.DTO.UsuarioDTO;
 import br.com.naoli.controller.form.AtualizacaoUsuarioForm;
@@ -35,48 +38,53 @@ public class UsuarioController {
 	}
 	
 	@GetMapping("/listById/{id}")
-	public UsuarioDTO listById(@PathVariable("id") Long id) {
+	public ResponseEntity<UsuarioDTO> listById(@PathVariable("id") Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
 		if(usuario.isPresent()) {
-			return new UsuarioDTO(usuario.get());
+			return ResponseEntity.ok(new UsuarioDTO(usuario.get()));
 		}
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 	
 	@GetMapping("/listByCpf/{cpf}")
-	public UsuarioDTO listByCpf(@PathVariable("cpf") String cpf) {
-		Usuario usuario = usuarioRepository.findByCpf(cpf);
-		return new UsuarioDTO(usuario);
+	public ResponseEntity<UsuarioDTO> listByCpf(@PathVariable("cpf") String cpf) {
+		Optional<Usuario> usuario = usuarioRepository.findByCpf(cpf);
+		if(usuario.isPresent()) {
+			return ResponseEntity.ok(new UsuarioDTO(usuario.get()));
+		}
+		return ResponseEntity.notFound().build();
 	}
 	
 	@PostMapping("/cadastro")
 	@Transactional
-	public Usuario cadastrarUsuario(@RequestBody @Valid UsuarioForm usuarioForm) {
+	public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody @Valid UsuarioForm usuarioForm, UriComponentsBuilder uriBuilder) {
 		//Convertendo UsuarioForm para Usuario
 		Usuario usuario = usuarioForm.converterUsuarioForm();
-		return this.usuarioRepository.save(usuario);
+		usuarioRepository.save(usuario);
+		
+		URI uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
+		return ResponseEntity.created(uri).body(new UsuarioDTO(usuario));
 	}
 	
 	@PutMapping("/update/{id}")
 	@Transactional
-	public UsuarioDTO updateUsuario(@PathVariable Long id, @RequestBody @Valid AtualizacaoUsuarioForm usuarioForm) {
+	public ResponseEntity<UsuarioDTO> updateUsuario(@PathVariable Long id, @RequestBody @Valid AtualizacaoUsuarioForm usuarioForm) {
 		Optional<Usuario> optional = usuarioRepository.findById(id);
 		if(optional.isPresent()) {
-			Usuario usuario = usuarioForm.atualizar(id, usuarioRepository);
-			return new UsuarioDTO(usuario);
+			usuarioForm.atualizar(id, usuarioRepository);
+			return ResponseEntity.ok().build();
 		}
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/delete/{id}")
 	@Transactional
-	public String delete(@PathVariable Long id) {
+	public ResponseEntity<?> delete(@PathVariable Long id) {
 		Optional<Usuario> usuario = usuarioRepository.findById(id);
-		String mensagem = "Deletado com sucesso!";
 		if(usuario.isPresent()) {
 			usuarioRepository.deleteById(id);
-			return mensagem;
+			return ResponseEntity.ok().build();
 		}
-		return null;
+		return ResponseEntity.notFound().build();
 	}
 }
