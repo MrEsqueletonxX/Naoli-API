@@ -9,4 +9,5 @@ import br.com.naoli.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 	Optional<Usuario> findByCpf(String cpf);
 	
+	Optional<Usuario> findByUsername(String username);
 }

@@ -55,6 +55,15 @@ public class UsuarioController {
 		return ResponseEntity.notFound().build();
 	}
 	
+	@GetMapping("/listByUsername/{username}")
+	public ResponseEntity<UsuarioDTO> listByUsername(@PathVariable("username") String username) {
+		Optional<Usuario> usuario = usuarioRepository.findByUsername(username);
+		if(usuario.isPresent()) {
+			return ResponseEntity.ok(new UsuarioDTO(usuario.get()));
+		}
+		return ResponseEntity.notFound().build();
+	}
+	
 	@PostMapping("/cadastro")
 	@Transactional
 	public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody @Valid UsuarioForm usuarioForm, UriComponentsBuilder uriBuilder) {
